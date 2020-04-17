@@ -59,7 +59,10 @@ Install:
 
 * [Cygwin x64](http://www.cygwin.com/)  
   Required packages: autoconf, binutils, cpio, diffutils, file, gawk, gcc-core, make, m4, unzip, zip.  
-  **Install them while installing cygwin**.
+  **Install them while installing cygwin.
+  It's strongly recommended to add cygwin64/bin to your PATH.
+  Make 4.3.1 is known to have issues with building JDK
+  If you have problems while building with latest make, try installing older version.**
 * Visual Studio compiler toolset [Download](https://visualstudio.microsoft.com/downloads/)  
   Visual Studio 2015 has support by default.  
   **Install with desktop development kit, it includes Windows SDK and compilers**.
@@ -68,8 +71,8 @@ Install:
 
 From command line 
 ```
-"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
-"c:\Program_Files\cygwin64\bin\mintty.exe" /bin/bash -l
+"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+"C:\Program Files\cygwin64\bin\mintty.exe" /bin/bash -l
 ```
 First command will set env vars, the second will run cygwin shell with proper environment.  
 In cygwin shell 
@@ -89,6 +92,14 @@ run
 sh ./configure --prefix=$(pwd)/build  --disable-warnings-as-errors
 make images
 ```
+
+## Setting up IDEA project
+It's recommended to install Ant and properly set ANT_HOME to be able to run `images` and `clean` targets from IDEA.
+```
+cd JetBrainsRuntime
+sh ./bin/idea.sh -v
+```
+If idea.sh fails on Cygwin, you may try checking your `global core.autocrlf` setting.
 
 ## Contribution
 We will be happy to receive your pull requests. Before you submit one, please sign our Contributor License Agreement (CLA)  https://www.jetbrains.com/agreements/cla/ 

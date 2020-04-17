@@ -21,6 +21,25 @@
       <expanded value="true" />
     </buildFile>
   </component>
+  <component name="RunManager">
+    <configuration name="All tests" type="JUnit" factoryName="JUnit">
+      <module name="test" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="###BUILD_DIR###/jdk" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="directory" />
+      <option name="VM_PARAMETERS" value="-ea -XX:+PreserveFramePointer -Djb.java2d.metal=true -Dtestdata=jbu/testdata" />
+      <option name="PARAMETERS" value="" />
+      <dir value="###ROOT_DIR###/test/jdk/jbu" />
+      <patterns>
+        <pattern testClass="*" />
+      </patterns>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />

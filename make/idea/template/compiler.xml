@@ -6,7 +6,7 @@
       <directory url="file://###ROOT_DIR###/src" includeSubdirectories="true" />
       <directory url="file://###ROOT_DIR###/build" includeSubdirectories="true" />
       <directory url="file://###ROOT_DIR###/make" includeSubdirectories="true" />
-      <directory url="file://###ROOT_DIR###/test" includeSubdirectories="true" />
+      <directory url="file://###ROOT_DIR###/test" includeSubdirectories="false" />
     </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>

@@ -77,7 +77,7 @@ MAKE_DIR="$SCRIPT_DIR/../make"
 IDEA_MAKE="$MAKE_DIR/idea"
 IDEA_TEMPLATE="$IDEA_MAKE/template"
 
-cp -r "$IDEA_TEMPLATE"/* "$IDEA_OUTPUT"
+cp -rn "$IDEA_TEMPLATE"/* "$IDEA_OUTPUT"
 
 #override template
 if [ -d "$TEMPLATES_OVERRIDE" ] ; then
@@ -96,9 +96,9 @@ cd $SCRIPT_DIR
 
 . $IDEA_OUTPUT/env.cfg
 
-# Expect MODULE_ROOTS, MODULE_NAMES, BOOT_JDK & SPEC to be set
-if [ "x$MODULE_ROOTS" = "x" ] ; then
-  echo "FATAL: MODULE_ROOTS is empty" >&2; exit 1
+# Expect MODULES, MODULE_NAMES, BOOT_JDK & SPEC to be set
+if [ "x$MODULES" = "x" ] ; then
+  echo "FATAL: MODULES is empty" >&2; exit 1
 fi
 
 if [ "x$MODULE_NAMES" = "x" ] ; then
@@ -165,19 +165,53 @@ else
     fi
 fi
 
-SOURCE_PREFIX="<sourceFolder url=\"file://"
-SOURCE_POSTFIX="\" isTestSource=\"false\" />"
-
-for root in $MODULE_ROOTS; do
-    if [ "x$CYGPATH" != "x" ]; then
-    	root=`cygpath -am $root`
-    fi
-    SOURCES=$SOURCES" $SOURCE_PREFIX""$root""$SOURCE_POSTFIX"
+MODULE_IMLS=""
+TEST_MODULE_DEPENDENCIES=""
+for module in $MODULE_NAMES; do
+    MODULE_IMLS="$MODULE_IMLS<module fileurl=\"file://\$PROJECT_DIR$/.idea/$module.iml\" filepath=\"\$PROJECT_DIR$/.idea/$module.iml\" /> "
+    TEST_MODULE_DEPENDENCIES="$TEST_MODULE_DEPENDENCIES<orderEntry type=\"module\" module-name=\"$module\" scope=\"TEST\" /> "
 done
-
-add_replacement "###SOURCE_ROOTS###" "$SOURCES"
+add_replacement "###MODULE_IMLS###" "$MODULE_IMLS"
+add_replacement "###TEST_MODULE_DEPENDENCIES###" "$TEST_MODULE_DEPENDENCIES"
 
 replace_template_dir "$IDEA_OUTPUT"
+
+### Generate module project files
+
+(
+DEFAULT_IFS="$IFS"
+IFS='#'
+for value in $MODULES; do
+  (
+  eval "$value"
+  if [ "$VERBOSE" = "true" ] ; then
+    echo "generating project module: $module"
+  fi
+  add_replacement "###MODULE_DIR###" "src/$module"
+  SOURCE_DIRS=""
+  IFS=' '
+  for dir in $moduleSrcDirs; do
+    if [ "x$CYGPATH" != "x" ]; then
+      dir="`cygpath -am $dir`"
+    fi
+    if [ "x$CYGPATH" != "x" ]; then
+      dir="`cygpath -am $dir`"
+    fi
+    SOURCE_DIRS="$SOURCE_DIRS<sourceFolder url=\"file://$dir\" isTestSource=\"false\" /> "
+  done
+  add_replacement "###SOURCE_DIRS###" "$SOURCE_DIRS"
+  DEPENDENCIES=""
+  for dep in $moduleDependencies; do
+    DEPENDENCIES="$DEPENDENCIES<orderEntry type=\"module\" module-name=\"$dep\" /> "
+  done
+  add_replacement "###DEPENDENCIES###" "$DEPENDENCIES"
+  cp "$IDEA_OUTPUT/module.iml" "$IDEA_OUTPUT/$module.iml"
+  IFS="$DEFAULT_IFS"
+  replace_template_file "$IDEA_OUTPUT/$module.iml"
+  )
+done
+)
+rm "$IDEA_OUTPUT/module.iml"
 
 ### Compile the custom Logger
 
