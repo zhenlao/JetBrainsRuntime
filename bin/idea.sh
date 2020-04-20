@@ -197,7 +197,10 @@ for value in $MODULES; do
     if [ "x$CYGPATH" != "x" ]; then
       dir="`cygpath -am $dir`"
     fi
-    SOURCE_DIRS="$SOURCE_DIRS<sourceFolder url=\"file://$dir\" isTestSource=\"false\" /> "
+    case $dir in # Exclude generated sources to avoid module-info conflicts, see https://youtrack.jetbrains.com/issue/IDEA-185108
+      "$SPEC_DIR"*) ;;
+      *) SOURCE_DIRS="$SOURCE_DIRS<sourceFolder url=\"file://$dir\" isTestSource=\"false\" /> "
+    esac
   done
   add_replacement "###SOURCE_DIRS###" "$SOURCE_DIRS"
   DEPENDENCIES=""
