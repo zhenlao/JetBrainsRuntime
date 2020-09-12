@@ -129,6 +129,8 @@ JRE_TOOL_MODULES += \
     jdk.jdwp.agent \
     jdk.pack \
     jdk.scripting.nashorn.shell \
+    jetbrains.api \
+    jetbrains.api.impl \
     #
 
 ################################################################################

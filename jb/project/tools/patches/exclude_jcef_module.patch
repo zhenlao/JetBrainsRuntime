@@ -3,8 +3,8 @@ IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- src/java.desktop/share/classes/module-info.java	(revision 5ae6630e3ebc71beb9f9df63b1b5bc19c9405d1f)
-+++ src/java.desktop/share/classes/module-info.java	(date 1588168285537)
+--- src/java.desktop/share/classes/module-info.java	(revision d29d53cac11ac94a72d9087e315ae99b31572cb8)
++++ src/java.desktop/share/classes/module-info.java	(date 1599879923220)
 @@ -109,10 +109,7 @@
      // see make/GensrcModuleInfo.gmk
      exports sun.awt to
@@ -22,12 +22,12 @@ IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- modules.list	(revision 5ae6630e3ebc71beb9f9df63b1b5bc19c9405d1f)
-+++ modules.list	(date 1588168285505)
-@@ -61,5 +61,4 @@
- jdk.unsupported,
+--- modules.list	(revision d29d53cac11ac94a72d9087e315ae99b31572cb8)
++++ modules.list	(date 1599879940315)
+@@ -62,6 +62,5 @@
  jdk.xml.dom,
  jdk.zipfs,
--jdk.hotspot.agent,
--jcef
-+jdk.hotspot.agent
+ jdk.hotspot.agent,
+-jcef,
+ jetbrains.api,
+ jetbrains.api.impl
