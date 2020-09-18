@@ -21,6 +21,8 @@ module jetbrains.api.impl {
 
     requires jetbrains.api;
 
+    // We probably don't want to add `provides with` for each version of API, so we just provide `JBRService`
+    // implementation, `JBRService#load` will take care of the rest
     provides JBRService with SampleJBRApiImpl;
 
 }

@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 /**
- * Marker interface, can be used with Java SPI to enumerate JBR services
+ * Marker interface, can be used with Java SPI to enumerate JBR services.
  * All JBR services must implement this interface
  */
 public interface JBRService {
@@ -69,6 +69,10 @@ class JBRServiceManager {
         services = Collections.unmodifiableMap(map);
     }
 
+    /**
+     * Finds all chains of class/interface hierarchy that leads from given {@code clazz} to {@link JBRService}
+     * and assigns given {@code serviceHolder} to them
+     */
     @SuppressWarnings("unchecked")
     private static boolean populateServiceMap(Map<Class<? extends JBRService>, ServiceHolder<?>> map,
                                               ServiceHolder<?> serviceHolder, Class<?> clazz) {
@@ -78,7 +82,6 @@ class JBRServiceManager {
         for(Class<?> ifc : clazz.getInterfaces()) {
             if(populateServiceMap(map, serviceHolder, ifc)) {
                 isSubtypeOfJBRService = true;
-                break;
             }
         }
         if(!isSubtypeOfJBRService) {
