@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
+import com.jetbrains.JBRService;
+
 module jetbrains.api {
 
     exports com.jetbrains;
+
+    uses JBRService;
 
 }

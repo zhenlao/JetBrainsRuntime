@@ -18,7 +18,8 @@ package com.jetbrains;
 
 public class JBRApiVersion {
 
-    private static final int MAJOR = 1, MINOR = 1;
+    private static final int MAJOR = 0;
+    private static final int MINOR = 0;
 
     public static int getMajor() {
         return MAJOR;
