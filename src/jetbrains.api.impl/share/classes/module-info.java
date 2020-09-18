@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
+import com.jetbrains.JBRService;
+import com.jetbrains.impl.SampleJBRApiImpl;
+
 module jetbrains.api.impl {
 
     requires jetbrains.api;
+
+    provides JBRService with SampleJBRApiImpl;
 
 }
