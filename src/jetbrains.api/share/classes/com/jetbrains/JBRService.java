@@ -80,13 +80,9 @@ class JBRServiceManager {
         if(clazz.equals(JBRService.class)) return true;
         boolean isSubtypeOfJBRService = false;
         for(Class<?> ifc : clazz.getInterfaces()) {
-            if(populateServiceMap(map, serviceHolder, ifc)) {
-                isSubtypeOfJBRService = true;
-            }
+            isSubtypeOfJBRService |= populateServiceMap(map, serviceHolder, ifc);
         }
-        if(!isSubtypeOfJBRService) {
-            isSubtypeOfJBRService = populateServiceMap(map, serviceHolder, clazz.getSuperclass());
-        }
+        isSubtypeOfJBRService |= populateServiceMap(map, serviceHolder, clazz.getSuperclass());
         if(isSubtypeOfJBRService) {
             map.put((Class<? extends JBRService>) clazz, serviceHolder);
         }
