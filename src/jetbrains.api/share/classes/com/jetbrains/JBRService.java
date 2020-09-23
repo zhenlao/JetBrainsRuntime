@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.function.Supplier;
 
 /**
  * Marker interface, can be used with Java SPI to enumerate JBR services.
@@ -29,13 +30,19 @@ public interface JBRService {
 
 
     /**
-     * Loads JBR service for given interface
+     * Tries to load JBR service for given interface.
+     * Returns null when there's no implementation for such interface, or when given Supplier throws
+     * NoClassDefFoundError, which usually means that given interface is absent in module path.
      */
     @SuppressWarnings("unchecked")
-    static <T extends JBRService> T load(Class<T> serviceInterface) {
-        JBRServiceManager.ServiceHolder<T> serviceHolder =
-                (JBRServiceManager.ServiceHolder<T>) JBRServiceManager.services.get(serviceInterface);
-        return serviceHolder == null ? null : serviceHolder.get();
+    static <T extends JBRService> T load(Supplier<Class<T>> serviceInterface) {
+        try {
+            JBRServiceManager.ServiceHolder<T> serviceHolder =
+                    (JBRServiceManager.ServiceHolder<T>) JBRServiceManager.services.get(serviceInterface.get());
+            return serviceHolder == null ? null : serviceHolder.get();
+        } catch (NoClassDefFoundError ignore) {
+            return null;
+        }
     }
 
 

@@ -18,7 +18,6 @@ import com.jetbrains.JBRService;
 import com.jetbrains.SampleJBRApi;
 
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /*
  * @test
@@ -26,19 +25,6 @@ import java.util.function.Supplier;
  */
 
 public class JBRServiceTest {
-
-
-    /**
-     * We need our own wrapper method on user side to load JBR services.
-     * This is because passing Class object directly may cause NoClassDefFoundError on incompatible JBRs.
-     */
-    private static <T extends JBRService> T loadService(Supplier<Class<T>> jbrSerivceInterface) {
-        try {
-            return JBRService.load(jbrSerivceInterface.get());
-        } catch (NoClassDefFoundError ignore) {
-            return null;
-        }
-    }
 
 
     /**
@@ -65,16 +51,15 @@ public class JBRServiceTest {
      * </ul>
      *
      * General rule when using JBR API is to avoid loading classes unless you make sure they're available at runtime.
-     * To check for service availability you can try loading it, but make sure you're handling NoClassDefFoundErrors
-     * properly (see {@link #loadService}).
+     * To check for service availability you can try loading it with {@link JBRService#load}.
      * Also avoid using 'instanceof' to test JBR service implementation against specific interface, because using
      * it in 'instanceof' statement will cause loading this interface, which may in turn cause NoClassDefFoundError.
      */
     public static void main(String[] args) {
         // Declaring variables is safe
         SampleJBRApi.V1 service;
-        // We pass lambda instead of plain class. This allows loadService to deal with NoClassDefFoundErrors
-        service = loadService(() -> SampleJBRApi.V1.class);
+        // We pass lambda instead of plain class. This allows JBRService#load to deal with NoClassDefFoundErrors
+        service = JBRService.load(() -> SampleJBRApi.V1.class);
         // Null-checking variables is safe too
         Objects.requireNonNull(service);
         // When we ensured that SampleJBRApi.V1 is available, we can use anything that's inside
@@ -83,7 +68,7 @@ public class JBRServiceTest {
         service.someMethod1(new SampleJBRApi.V1.SomeDataClass());
 
         // But don't try doing 'service instanceof SampleJBRApi.V2' as it may cause NoClassDefFoundErrors!
-        SampleJBRApi.V2 service2 = Objects.requireNonNull(loadService(() -> SampleJBRApi.V2.class));
+        SampleJBRApi.V2 service2 = Objects.requireNonNull(JBRService.load(() -> SampleJBRApi.V2.class));
         // Versioned service interfaces are inherited, so V2 gives you access to both V2 and V1 API
         service2.someMethod1(service2.someMethod2());
     }
