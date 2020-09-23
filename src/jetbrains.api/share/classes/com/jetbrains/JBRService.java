@@ -38,10 +38,6 @@ public interface JBRService {
         return serviceHolder == null ? null : serviceHolder.get();
     }
 
-    static boolean areAnyServicesAvailable() {
-        return JBRServiceManager.services.size() > 0;
-    }
-
 
 }
 
