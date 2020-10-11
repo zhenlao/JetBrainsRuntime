@@ -66,6 +66,8 @@ BOOT_MODULES += \
     jdk.net \
     jdk.sctp \
     jdk.unsupported \
+    jetbrains.api \
+    jetbrains.api.impl \
     #
 
 # to be deprivileged
@@ -129,8 +131,6 @@ JRE_TOOL_MODULES += \
     jdk.jdwp.agent \
     jdk.pack \
     jdk.scripting.nashorn.shell \
-    jetbrains.api \
-    jetbrains.api.impl \
     #
 
 ################################################################################
