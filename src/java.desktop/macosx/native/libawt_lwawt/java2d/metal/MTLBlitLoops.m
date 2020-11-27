@@ -63,9 +63,9 @@ typedef struct {
  * an Metal surface
  */
 MTLRasterFormatInfo RasterFormatInfos[] = {
-        { MTLPixelFormatBGRA8Unorm, 1, 0, @"" }, /* 0 - IntArgb      */ // Argb (in java notation)
-        { MTLPixelFormatBGRA8Unorm, 1, 1, @"" }, /* 1 - IntArgbPre   */
-        { MTLPixelFormatBGRA8Unorm, 0, 1, @"" }, /* 2 - IntRgb       */
+        { MTLPixelFormatBGRA8Unorm, 1, 0, nil }, /* 0 - IntArgb      */ // Argb (in java notation)
+        { MTLPixelFormatBGRA8Unorm, 1, 1, nil }, /* 1 - IntArgbPre   */
+        { MTLPixelFormatBGRA8Unorm, 0, 1, nil }, /* 2 - IntRgb       */
         { MTLPixelFormatBGRA8Unorm, 0, 1, @"xrgb_to_rgba" }, /* 3 - IntRgbx      */
         { MTLPixelFormatBGRA8Unorm, 0, 1, @"bgr_to_rgba"  }, /* 4 - IntBgr       */
         { MTLPixelFormatBGRA8Unorm, 0, 1, @"xbgr_to_rgba" }, /* 5 - IntBgrx      */
@@ -170,7 +170,7 @@ replaceTextureRegion(MTLContext *mtlc, id<MTLTexture> dest, const SurfaceDataRas
                     dw, dh, dx1, dy1);
         // NOTE: we might want to fill alpha channel when !rfi->hasAlpha
         id<MTLBuffer> buff = [mtlc.device newBufferWithBytes:raster length:srcInfo->scanStride * dh options:MTLResourceStorageModeManaged];
-        if (rfi->swizzleKernel.length != 0) {
+        if (rfi->swizzleKernel != nil) {
             id <MTLBuffer> swizzled = [mtlc.device newBufferWithLength:srcInfo->scanStride * dh options:MTLResourceStorageModeManaged];
 
             // this should be cheap, since data is already on GPU
